@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { ThemeProvider, createTheme } from '@mui/material';
+import { ThemeProvider } from '@mui/material';
+import { theme } from './styles/theme';
 import Navbar from './components/Navbar';
 import Home from './components/Home';
 import JobSeekerForm from './components/JobSeekerForm';
@@ -8,17 +9,6 @@ import EmployerForm from './components/EmployerForm';
 import JobList from './components/JobList';
 import InterviewPrep from './components/InterviewPrep';
 import SkillAssessment from './components/SkillAssessment';
-
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#1976d2',
-    },
-    secondary: {
-      main: '#388e3c',
-    },
-  },
-});
 
 function App() {
   return (
