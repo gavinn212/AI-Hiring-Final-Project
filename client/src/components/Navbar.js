@@ -4,7 +4,14 @@ import { Link } from 'react-router-dom';
 
 function Navbar() {
   return (
-    <AppBar position="static">
+    <AppBar 
+      position="fixed" 
+      sx={{ 
+        background: 'linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #3f6bc1 100%)',
+        boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
+        backdropFilter: 'blur(10px)',
+      }}
+    >
       <Toolbar>
         <Typography variant="h6" component={Link} to="/" sx={{ 
           flexGrow: 1, 

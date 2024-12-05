@@ -4,74 +4,102 @@ import { Link, useLocation } from 'react-router-dom';
 import HomeIcon from '@mui/icons-material/Home';
 import WorkIcon from '@mui/icons-material/Work';
 import BusinessIcon from '@mui/icons-material/Business';
-import ChatIcon from '@mui/icons-material/Chat';
 import SchoolIcon from '@mui/icons-material/School';
-import AssessmentIcon from '@mui/icons-material/Assessment';
+import InfoIcon from '@mui/icons-material/Info';
+import PersonIcon from '@mui/icons-material/Person';
 
 const drawerWidth = 240;
 
 const Main = styled('main')(({ theme }) => ({
   flexGrow: 1,
-  padding: theme.spacing(3),
-  marginLeft: drawerWidth,
+  padding: theme.spacing(4),
+  paddingLeft: theme.spacing(4),
+  paddingRight: theme.spacing(4),
+  marginLeft: 0,
   marginBottom: '60px',
+  marginTop: '90px',
+  minHeight: '100vh',
+  backgroundColor: '#f8f9fa',
+  transition: 'all 0.3s ease',
+  maxWidth: `calc(100vw - ${drawerWidth}px)`,
+}));
+
+const StyledDrawer = styled(Drawer)(() => ({
+  width: drawerWidth,
+  flexShrink: 0,
+  '& .MuiDrawer-paper': {
+    width: drawerWidth,
+    boxSizing: 'border-box',
+    borderRight: 'none',
+    background: 'linear-gradient(180deg, #1e3c72 0%, #2a5298 100%)',
+    boxShadow: '4px 0 15px rgba(0, 0, 0, 0.1)',
+    overflow: 'hidden',
+    marginTop: '75px',
+    '&::-webkit-scrollbar': {
+      display: 'none',
+    },
+    scrollbarWidth: 'none',
+    msOverflowStyle: 'none',
+  },
 }));
 
 const menuItems = [
   { text: 'Home', icon: <HomeIcon />, path: '/' },
   { text: 'Jobs', icon: <WorkIcon />, path: '/jobs' },
-  { text: 'For Job Seekers', icon: <SchoolIcon />, path: '/job-seeker' },
-  { text: 'For Employers', icon: <BusinessIcon />, path: '/employer' },
-  { text: 'Interview Prep', icon: <AssessmentIcon />, path: '/interview-prep' },
-  { text: 'Chat Support', icon: <ChatIcon />, path: '/chat' },
+  { text: 'Job Seekers', icon: <PersonIcon />, path: '/job-seeker' },
+  { text: 'Employers', icon: <BusinessIcon />, path: '/employer' },
+  { text: 'Interview Prep', icon: <SchoolIcon />, path: '/interview-prep' },
+  { text: 'About', icon: <InfoIcon />, path: '/about' }
 ];
 
 function Layout({ children }) {
   const location = useLocation();
 
   return (
-    <Box sx={{ display: 'flex' }}>
-      <Drawer
-        variant="permanent"
-        sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          '& .MuiDrawer-paper': {
-            width: drawerWidth,
-            boxSizing: 'border-box',
-            bgcolor: 'background.paper',
-            borderRight: '1px solid rgba(0, 0, 0, 0.12)',
+    <Box sx={{ 
+      display: 'flex',
+      gap: 0,
+    }}>
+      <StyledDrawer variant="permanent">
+        <Box sx={{ 
+          overflow: 'hidden',
+          mt: 1,
+          '&::-webkit-scrollbar': {
+            display: 'none',
           },
-        }}
-      >
-        <Box sx={{ overflow: 'auto', mt: 8 }}>
+          scrollbarWidth: 'none',
+        }}>
           <List>
             {menuItems.map((item) => (
-              <ListItem 
-                button 
-                key={item.text} 
-                component={Link} 
+              <ListItem
+                key={item.text}
+                component={Link}
                 to={item.path}
-                selected={location.pathname === item.path}
                 sx={{
-                  '&.Mui-selected': {
-                    bgcolor: 'primary.light',
+                  mb: 0.5,
+                  mx: 1,
+                  borderRadius: '10px',
+                  color: 'white',
+                  transition: 'all 0.3s ease',
+                  padding: '8px 16px',
+                  backgroundColor: location.pathname === item.path 
+                    ? 'rgba(255, 255, 255, 0.15)' 
+                    : 'transparent',
+                  '&:hover': {
+                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                    transform: 'translateX(5px)',
                     '& .MuiListItemIcon-root': {
-                      color: 'white',
-                    },
-                    '& .MuiListItemText-primary': {
-                      color: 'white',
-                      fontWeight: 'bold',
+                      transform: 'scale(1.2)',
                     },
                   },
-                  '&:hover': {
-                    bgcolor: 'primary.light',
-                    '& .MuiListItemIcon-root': {
-                      color: 'white',
-                    },
-                    '& .MuiListItemText-primary': {
-                      color: 'white',
-                    },
+                  '& .MuiListItemIcon-root': {
+                    transition: 'transform 0.3s ease',
+                    color: 'white',
+                  },
+                  '& .MuiListItemText-primary': {
+                    color: 'white',
+                    fontWeight: location.pathname === item.path ? '600' : '400',
+                    fontSize: '0.9rem',
                   },
                 }}
               >
@@ -92,9 +120,15 @@ function Layout({ children }) {
             ))}
           </List>
         </Box>
-      </Drawer>
+      </StyledDrawer>
       <Main>
-        {children}
+        <Box sx={{ 
+          maxWidth: '1400px',
+          margin: '0 auto',
+          width: '100%'
+        }}>
+          {children}
+        </Box>
       </Main>
     </Box>
   );

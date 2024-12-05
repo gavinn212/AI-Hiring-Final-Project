@@ -10,6 +10,7 @@ import JobSeekerForm from './components/JobSeekerForm';
 import EmployerForm from './components/EmployerForm';
 import JobList from './components/JobList';
 import InterviewPrep from './components/InterviewPrep';
+import About from './pages/About';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
               <Route path="/employer" element={<EmployerForm />} />
               <Route path="/jobs" element={<JobList />} />
               <Route path="/interview-prep" element={<InterviewPrep />} />
+              <Route path="/about" element={<About />} />
             </Routes>
           </Layout>
           <ChatWidget />
