@@ -4,6 +4,7 @@
     "@mui/icons-material": "^6.1.10",
     "@mui/lab": "^5.0.0-alpha.165",
     "framer-motion": "^11.13.1",
+    "openai": "^4.76.0",
     "react-scripts": "^5.0.1",
     "react-spring": "^9.7.4"
   }

@@ -2,7 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const mysql = require('mysql2');
-const { Configuration, OpenAIApi } = require('openai');
+const OpenAI = require('openai');
 
 const app = express();
 app.use(cors());
@@ -13,7 +13,7 @@ const db = mysql.createConnection({
   host: process.env.DB_HOST || 'localhost',
   user: process.env.DB_USER || 'root',
   password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME || 'jobportal'
+  database: process.env.DB_NAME || 'skillmatch_ai'
 });
 
 // Test database connection
@@ -27,7 +27,7 @@ db.connect((err) => {
 
 // Test endpoint to check if jobs table exists and has data
 app.get('/api/jobs', (req, res) => {
-  const query = 'SELECT * FROM jobs';
+  const query = 'SELECT j.*, e.company_name FROM jobs j JOIN employers e ON j.employer_id = e.id';
   
   db.query(query, (err, results) => {
     if (err) {
@@ -38,27 +38,11 @@ app.get('/api/jobs', (req, res) => {
       });
     }
     
+    console.log('Query results:', results); // Debug log
+    
     if (results.length === 0) {
-      // If no jobs found, return sample data
-      const sampleJobs = [
-        {
-          id: 1,
-          title: "Senior Software Engineer",
-          company_name: "Tech Corp",
-          description: "We are looking for an experienced software engineer to join our team...",
-          required_skills: "React, Node.js, AWS, TypeScript",
-          location: "New York, NY"
-        },
-        {
-          id: 2,
-          title: "Frontend Developer",
-          company_name: "Web Solutions Inc",
-          description: "Seeking a talented frontend developer with strong React experience...",
-          required_skills: "JavaScript, React, CSS, HTML",
-          location: "Remote"
-        }
-      ];
-      return res.json(sampleJobs);
+      console.log('No jobs found in database'); // Debug log
+      return res.status(404).json({ message: 'No jobs found' });
     }
     
     res.json(results);
@@ -66,15 +50,14 @@ app.get('/api/jobs', (req, res) => {
 });
 
 // Existing OpenAI configuration
-const configuration = new Configuration({
+const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
-const openai = new OpenAIApi(configuration);
 
 // Existing chat endpoint
 app.post('/api/chat', async (req, res) => {
   try {
-    const completion = await openai.createChatCompletion({
+    const completion = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
       messages: req.body.messages,
       temperature: 0.7,
@@ -82,7 +65,7 @@ app.post('/api/chat', async (req, res) => {
     });
 
     res.json({
-      content: completion.data.choices[0].message.content
+      content: completion.choices[0].message.content
     });
   } catch (error) {
     console.error('Error:', error);

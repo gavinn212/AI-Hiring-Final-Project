@@ -12,14 +12,21 @@ import axios from 'axios';
 
 function JobList() {
   const [jobs, setJobs] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchJobs = async () => {
+      setIsLoading(true);
+      setError(null);
       try {
-        const response = await axios.get('http://localhos~t:5000/api/jobs');
+        const response = await axios.get('http://localhost:5000/api/jobs');
         setJobs(response.data);
       } catch (error) {
         console.error('Error fetching jobs:', error);
+        setError('Failed to fetch jobs. Please try again later.');
+      } finally {
+        setIsLoading(false);
       }
     };
 
