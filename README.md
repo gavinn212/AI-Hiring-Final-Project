@@ -165,6 +165,9 @@ Made with ❤️ by Tinghao Zhang (Gavin)
 ## 📸 Screenshots
 
 <div align="center">
+  <img src="./client/public/screenshot 5.png" alt="Welcome Page" width="800"/>
+  <p><em>Welcome Dashboard - Platform features and getting started guide</em></p>
+  
   <img src="./client/public/screenshot 0.png" alt="Available Jobs" width="800"/>
   <p><em>Available Jobs - Browse and apply to matching job opportunities</em></p>
   
@@ -179,7 +182,5 @@ Made with ❤️ by Tinghao Zhang (Gavin)
   
   <img src="./client/public/screenshot 4.png" alt="Employer Profile" width="800"/>
   <p><em>Employer Profile Creation - Streamlined company profile setup</em></p>
-  
-  <img src="./client/public/screenshot 5.png" alt="Welcome Page" width="800"/>
-  <p><em>Welcome Dashboard - Platform features and getting started guide</em></p>
+
 </div>
