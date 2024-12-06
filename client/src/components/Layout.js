@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Drawer, List, ListItem, ListItemIcon, ListItemText, styled } from '@mui/material';
+import { Box, Drawer, List, ListItem, ListItemIcon, ListItemText, styled, Typography } from '@mui/material';
 import { Link, useLocation } from 'react-router-dom';
 import HomeIcon from '@mui/icons-material/Home';
 import WorkIcon from '@mui/icons-material/Work';
@@ -56,10 +56,7 @@ function Layout({ children }) {
   const location = useLocation();
 
   return (
-    <Box sx={{ 
-      display: 'flex',
-      gap: 0,
-    }}>
+    <Box sx={{ display: 'flex', gap: 0 }}>
       <StyledDrawer variant="permanent">
         <Box sx={{ 
           overflow: 'hidden',
@@ -68,6 +65,9 @@ function Layout({ children }) {
             display: 'none',
           },
           scrollbarWidth: 'none',
+          display: 'flex',
+          flexDirection: 'column',
+          height: '100%',
         }}>
           <List>
             {menuItems.map((item) => (
@@ -88,37 +88,45 @@ function Layout({ children }) {
                   '&:hover': {
                     backgroundColor: 'rgba(255, 255, 255, 0.1)',
                     transform: 'translateX(5px)',
-                    '& .MuiListItemIcon-root': {
-                      transform: 'scale(1.2)',
-                    },
-                  },
-                  '& .MuiListItemIcon-root': {
-                    transition: 'transform 0.3s ease',
-                    color: 'white',
-                  },
-                  '& .MuiListItemText-primary': {
-                    color: 'white',
-                    fontWeight: location.pathname === item.path ? '600' : '400',
-                    fontSize: '0.9rem',
                   },
                 }}
               >
-                <ListItemIcon sx={{ 
-                  color: location.pathname === item.path ? 'white' : 'primary.main'
-                }}>
+                <ListItemIcon sx={{ color: 'white' }}>
                   {item.icon}
                 </ListItemIcon>
-                <ListItemText 
-                  primary={item.text}
-                  sx={{
-                    '& .MuiListItemText-primary': {
-                      fontWeight: location.pathname === item.path ? 'bold' : 'normal',
-                    },
-                  }}
-                />
+                <ListItemText primary={item.text} />
               </ListItem>
             ))}
           </List>
+          
+          <Box sx={{
+            mt: 'auto',
+            p: 3,
+            textAlign: 'center',
+            color: 'rgba(255, 255, 255, 0.9)',
+            borderTop: '1px solid rgba(255, 255, 255, 0.2)',
+            background: 'rgba(255, 255, 255, 0.05)',
+          }}>
+            <Typography 
+              variant="subtitle2" 
+              sx={{ 
+                fontWeight: 600,
+                mb: 0.5,
+                color: 'white'
+              }}
+            >
+              Tinghao Zhang (Gavin)
+            </Typography>
+            <Typography 
+              variant="body2" 
+              sx={{ 
+                opacity: 0.8,
+                fontSize: '0.9rem'
+              }}
+            >
+              @NYU Tandon
+            </Typography>
+          </Box>
         </Box>
       </StyledDrawer>
       <Main>

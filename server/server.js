@@ -2,7 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const mysql = require('mysql2');
-const OpenAI = require('openai');
+const { GoogleGenerativeAI } = require('@google/generative-ai');
 
 const app = express();
 app.use(cors());
@@ -49,27 +49,28 @@ app.get('/api/jobs', (req, res) => {
   });
 });
 
-// Existing OpenAI configuration
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+// Update Gemini configuration
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
-// Existing chat endpoint
+// Updated chat endpoint to use Gemini
 app.post('/api/chat', async (req, res) => {
   try {
-    const completion = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo",
-      messages: req.body.messages,
-      temperature: 0.7,
-      max_tokens: 800,
-    });
-
+    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+    const chat = model.startChat();
+    
+    const prompt = req.body.messages[0].content;
+    const result = await chat.sendMessage(prompt);
+    const response = await result.response;
+    
     res.json({
-      content: completion.choices[0].message.content
+      content: response.text()
     });
   } catch (error) {
     console.error('Error:', error);
-    res.status(500).json({ error: 'Error processing your request' });
+    res.status(500).json({ 
+      error: 'Error processing your request',
+      details: error.message 
+    });
   }
 });
 

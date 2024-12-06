@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@emotion/styled": "^11.13.5",
+    "@google/generative-ai": "^0.21.0",
     "@mui/icons-material": "^6.1.10",
     "@mui/lab": "^5.0.0-alpha.165",
     "framer-motion": "^11.13.1",

@@ -63,14 +63,31 @@ function InterviewPrep() {
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      const prompt = `Act as an interview expert. Evaluate this answer for the question: "${selectedQuestion}"\n\nCandidate's answer: "${answer}"\n\nProvide feedback in the following JSON format:\n{\n"score": (number between 0-100),\n"feedback": [list of 2-3 positive points],\n"improvements": [list of 2-3 areas for improvement],\n"analysis": "detailed paragraph of analysis"\n}`;
+      const prompt = `You are an expert interview coach. Please evaluate this interview answer.
+Question: "${selectedQuestion}"
+Answer: "${answer}"
+
+Please provide your evaluation in the following format:
+
+Score: [0-100]
+
+Key Strengths:
+• [First strength point]
+• [Second strength point]
+• [Third strength point]
+
+Areas for Improvement:
+• [First improvement point]
+• [Second improvement point]
+• [Third improvement point]
+
+Detailed Analysis:
+[Provide a thorough analysis of the answer, explaining the reasoning behind the score and suggestions for improvement.]
+
+Please ensure you always include at least 2 points for both Strengths and Improvements, even for very good or very poor answers.`;
 
       const response = await axios.post('http://localhost:5000/api/chat', {
         messages: [
-          {
-            role: "system",
-            content: "You are an expert interview coach with years of experience helping candidates prepare for job interviews."
-          },
           {
             role: "user",
             content: prompt
@@ -78,12 +95,53 @@ function InterviewPrep() {
         ]
       });
 
-      // Parse the response from ChatGPT
-      const feedbackData = JSON.parse(response.data.content);
-      setFeedback(feedbackData);
+      // Parse the response text
+      const responseText = response.data.content;
+      
+      // Extract score
+      const scoreMatch = responseText.match(/Score:\s*(\d+)/i);
+      const score = scoreMatch ? parseInt(scoreMatch[1]) : 70;
+
+      // Extract strengths (ensure at least one point)
+      const strengthsMatch = responseText.match(/Key Strengths:([^]*?)(?=Areas for Improvement:|$)/i);
+      const strengths = strengthsMatch 
+        ? strengthsMatch[1].split(/•|-|\n/).filter(s => s.trim())
+        : ["Shows willingness to engage with the question"];
+
+      // Extract improvements (ensure at least one point)
+      const improvementsMatch = responseText.match(/Areas for Improvement:([^]*?)(?=Detailed Analysis:|$)/i);
+      const improvements = improvementsMatch
+        ? improvementsMatch[1].split(/•|-|\n/).filter(s => s.trim())
+        : ["Could provide more specific examples"];
+
+      // Extract analysis
+      const analysisMatch = responseText.match(/Detailed Analysis:([^]*?)$/i);
+      const analysis = analysisMatch 
+        ? analysisMatch[1].trim()
+        : responseText;
+
+      setFeedback({
+        score,
+        feedback: strengths.length > 0 ? strengths : ["Shows basic understanding"],
+        improvements: improvements.length > 0 ? improvements : ["Could add more detail"],
+        analysis: analysis || "Consider expanding your answer with specific examples and more detail."
+      });
+
     } catch (error) {
       console.error('Error getting feedback:', error);
-      // You might want to show an error message to the user here
+      // Provide default feedback if parsing fails
+      setFeedback({
+        score: 50,
+        feedback: [
+          "Attempted to answer the question",
+          "Shows basic understanding of the topic"
+        ],
+        improvements: [
+          "Add more specific examples",
+          "Provide more detail in your response"
+        ],
+        analysis: "Please try to provide a more detailed response with specific examples from your experience."
+      });
     }
     setLoading(false);
   };
@@ -203,40 +261,145 @@ function InterviewPrep() {
             )}
 
             {feedback && (
-              <Card>
-                <CardContent>
-                  <Typography variant="h6" gutterBottom>
-                    Feedback Score: {feedback.score}/100
-                  </Typography>
-                  
-                  <Typography variant="subtitle1" gutterBottom sx={{ mt: 2 }}>
-                    Strengths:
-                  </Typography>
-                  <List>
-                    {feedback.feedback.map((point, index) => (
-                      <ListItem key={index}>
-                        <ListItemText primary={point} />
-                      </ListItem>
-                    ))}
-                  </List>
+              <Card sx={{ 
+                mt: 4,
+                boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+                borderRadius: '16px',
+              }}>
+                <CardContent sx={{ p: 4 }}>
+                  {/* Score Section */}
+                  <Box sx={{ 
+                    display: 'flex',
+                    alignItems: 'center',
+                    mb: 3,
+                    pb: 3,
+                    borderBottom: '1px solid rgba(0,0,0,0.1)'
+                  }}>
+                    <Box sx={{
+                      width: 80,
+                      height: 80,
+                      borderRadius: '50%',
+                      border: '4px solid #1e3c72',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      mr: 3
+                    }}>
+                      <Typography variant="h4" sx={{ color: '#1e3c72', fontWeight: 'bold' }}>
+                        {feedback.score}
+                      </Typography>
+                    </Box>
+                    <Typography variant="h5" sx={{ color: '#1e3c72' }}>
+                      Overall Score
+                    </Typography>
+                  </Box>
 
-                  <Typography variant="subtitle1" gutterBottom sx={{ mt: 2 }}>
-                    Areas for Improvement:
-                  </Typography>
-                  <List>
-                    {feedback.improvements.map((point, index) => (
-                      <ListItem key={index}>
-                        <ListItemText primary={point} />
-                      </ListItem>
-                    ))}
-                  </List>
+                  {/* Strengths Section */}
+                  <Box sx={{ mb: 4 }}>
+                    <Typography 
+                      variant="h6" 
+                      sx={{ 
+                        mb: 2,
+                        color: '#2e7d32',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 1
+                      }}
+                    >
+                      <span>💪</span> Key Strengths
+                    </Typography>
+                    <List sx={{ bgcolor: '#f8faf8', borderRadius: 2, p: 2 }}>
+                      {feedback.feedback.map((point, index) => (
+                        <ListItem 
+                          key={index}
+                          sx={{
+                            py: 1,
+                            px: 2,
+                            mb: 1,
+                            bgcolor: 'white',
+                            borderRadius: 1,
+                            boxShadow: '0 2px 4px rgba(0,0,0,0.05)'
+                          }}
+                        >
+                          <ListItemText 
+                            primary={point}
+                            sx={{ '& .MuiTypography-root': { color: '#2e7d32' } }}
+                          />
+                        </ListItem>
+                      ))}
+                    </List>
+                  </Box>
 
-                  <Typography variant="subtitle1" gutterBottom sx={{ mt: 2 }}>
-                    Detailed Analysis:
-                  </Typography>
-                  <Typography paragraph>
-                    {feedback.analysis}
-                  </Typography>
+                  {/* Improvements Section */}
+                  <Box sx={{ mb: 4 }}>
+                    <Typography 
+                      variant="h6" 
+                      sx={{ 
+                        mb: 2,
+                        color: '#d32f2f',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 1
+                      }}
+                    >
+                      <span>🎯</span> Areas for Improvement
+                    </Typography>
+                    <List sx={{ bgcolor: '#fff8f8', borderRadius: 2, p: 2 }}>
+                      {feedback.improvements.map((point, index) => (
+                        <ListItem 
+                          key={index}
+                          sx={{
+                            py: 1,
+                            px: 2,
+                            mb: 1,
+                            bgcolor: 'white',
+                            borderRadius: 1,
+                            boxShadow: '0 2px 4px rgba(0,0,0,0.05)'
+                          }}
+                        >
+                          <ListItemText 
+                            primary={point}
+                            sx={{ '& .MuiTypography-root': { color: '#d32f2f' } }}
+                          />
+                        </ListItem>
+                      ))}
+                    </List>
+                  </Box>
+
+                  {/* Detailed Analysis Section */}
+                  <Box>
+                    <Typography 
+                      variant="h6" 
+                      sx={{ 
+                        mb: 2,
+                        color: '#1e3c72',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 1
+                      }}
+                    >
+                      <span>📝</span> Detailed Analysis
+                    </Typography>
+                    <Card 
+                      variant="outlined" 
+                      sx={{ 
+                        p: 3,
+                        bgcolor: '#f8f9fa',
+                        borderRadius: 2
+                      }}
+                    >
+                      <Typography 
+                        variant="body1" 
+                        sx={{ 
+                          lineHeight: 1.8,
+                          color: '#37474f',
+                          whiteSpace: 'pre-line'
+                        }}
+                      >
+                        {feedback.analysis}
+                      </Typography>
+                    </Card>
+                  </Box>
                 </CardContent>
               </Card>
             )}

@@ -3,6 +3,9 @@
 ## Overview
 SkillMatch AI is a modern recruitment and career development platform powered by artificial intelligence. It connects job seekers with employers while providing AI-driven interview preparation and skill assessment.
 
+
+
+
 ## 🌟 Key Features
 - AI-powered interview preparation with real-time feedback
 - Intelligent skill assessment and market demand analysis
@@ -153,3 +156,30 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 Made with ❤️ by Tinghao Zhang (Gavin)
+
+
+
+
+
+
+## 📸 Screenshots
+
+<div align="center">
+  <img src="./client/public/screenshot 0.png" alt="Available Jobs" width="800"/>
+  <p><em>Available Jobs - Browse and apply to matching job opportunities</em></p>
+  
+  <img src="./client/public/screenshot 1.png" alt="Job Seeker Profile" width="800"/>
+  <p><em>Job Seeker Profile Creation - Easy profile setup for job seekers</em></p>
+  
+  <img src="./client/public/screenshot 2.png" alt="Interview Practice" width="800"/>
+  <p><em>AI-Powered Interview Practice - Get real-time feedback on your responses</em></p>
+  
+  <img src="./client/public/screenshot 3.png" alt="Platform Overview" width="800"/>
+  <p><em>Platform Overview - Tech stack and architecture decisions</em></p>
+  
+  <img src="./client/public/screenshot 4.png" alt="Employer Profile" width="800"/>
+  <p><em>Employer Profile Creation - Streamlined company profile setup</em></p>
+  
+  <img src="./client/public/screenshot 5.png" alt="Welcome Page" width="800"/>
+  <p><em>Welcome Dashboard - Platform features and getting started guide</em></p>
+</div>

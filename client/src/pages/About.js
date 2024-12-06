@@ -3,7 +3,6 @@ import {
   Box, 
   Typography, 
   Paper, 
-  Divider, 
   Link,
   List,
   ListItem,
@@ -17,13 +16,18 @@ import CodeIcon from '@mui/icons-material/Code';
 import BrushIcon from '@mui/icons-material/Brush';
 import ArchitectureIcon from '@mui/icons-material/Architecture';
 import GitHubIcon from '@mui/icons-material/GitHub';
+import StorageIcon from '@mui/icons-material/Storage';
+import WebIcon from '@mui/icons-material/Web';
+import BackupIcon from '@mui/icons-material/Backup';
+import SmartToyIcon from '@mui/icons-material/SmartToy';
+import SecurityIcon from '@mui/icons-material/Security';
 
 function About() {
   const techStack = {
     Frontend: ['React.js', 'Material-UI', 'Framer Motion'],
     Backend: ['Node.js', 'Express'],
     Database: ['MySQL'],
-    AI: ['OpenAI GPT-3.5'],
+    AI: ['Google Gemini'],
     Authentication: ['JWT'],
   };
 
@@ -82,7 +86,14 @@ function About() {
             <Grid item xs={12} sm={6} md={4} key={category}>
               <Card variant="outlined">
                 <CardContent>
-                  <Typography variant="h6" gutterBottom>{category}</Typography>
+                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                    {category === 'Frontend' && <WebIcon sx={{ mr: 1 }} />}
+                    {category === 'Backend' && <BackupIcon sx={{ mr: 1 }} />}
+                    {category === 'Database' && <StorageIcon sx={{ mr: 1 }} />}
+                    {category === 'AI' && <SmartToyIcon sx={{ mr: 1 }} />}
+                    {category === 'Authentication' && <SecurityIcon sx={{ mr: 1 }} />}
+                    <Typography variant="h6">{category}</Typography>
+                  </Box>
                   <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
                     {technologies.map((tech) => (
                       <Chip 
@@ -151,8 +162,8 @@ function About() {
           </ListItem>
           <ListItem>
             <ListItemText 
-              primary="OpenAI Integration" 
-              secondary="Implemented for advanced natural language processing and AI-driven features"
+              primary="Gemini Integration" 
+              secondary="Implemented for advanced natural language processing, AI-driven features, and enhanced interview preparation capabilities"
             />
           </ListItem>
         </List>
