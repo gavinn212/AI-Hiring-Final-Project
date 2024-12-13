@@ -12,13 +12,13 @@ SkillMatch AI is a modern recruitment and career development platform powered by
 - Smart job matching system
 - Employer profile and job posting management
 - Comprehensive job seeker profiles
-- Real-time AI interview feedback using OpenAI GPT-3.5
+- Real-time AI interview feedback using Claude
 
 ## 🛠️ Tech Stack
 - **Frontend:** React.js, Material-UI, Framer Motion
 - **Backend:** Node.js, Express
 - **Database:** MySQL
-- **AI Integration:** OpenAI GPT-3.5
+- **AI Integration:** Claude
 - **Authentication:** JWT (optional)
 
 ## 📋 Prerequisites
