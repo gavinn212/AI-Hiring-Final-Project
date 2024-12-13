@@ -145,7 +145,7 @@ curl -X POST http://localhost:5000/api/interview-feedback \
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 🙏 Acknowledgments
-- OpenAI for GPT-3.5 API
+- Claude API
 - Material-UI team
 - All contributors
 
